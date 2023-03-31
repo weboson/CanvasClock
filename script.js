@@ -167,7 +167,7 @@ ctx.save();
 ctx.strokeStyle = 'black' // цвет контура стрелки
 ctx.beginPath();
 ctx.translate(250, 250);  // центр круга
-ctx.rotate(getRadians((hours * 6) - 180) ); // 60 шкал с интервалом по 6 пискселей между ними
+ctx.rotate(getRadians(hours * 6 )); // 60 шкал с интервалом по 6 пискселей между ними
 ctx.lineWidth = '5'// ширина контура
 ctx.moveTo(0,0); // точка пера в центре холста (круга)
 ctx.lineTo(100,0); // линия до указанной координатной точки
