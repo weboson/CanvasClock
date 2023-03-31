@@ -62,7 +62,7 @@ function clock() {
   //! ***********создадим 60 шкал
   // в уме: окружность радиусом 200
   //! цикл постройки всех 60-ти шкал
-  ctx.rotate((Math.PI / 180) * -96); // -96 чтобы 12 была наверху - выровнять позцию
+  ctx.rotate((Math.PI / 180) * 284); // -96 чтобы 12 была наверху - выровнять позцию
   for(let i = 0; i <= 60; i++) { // 60 раз нарисовать шкалу (60 секудн)
 
     
@@ -90,10 +90,22 @@ function clock() {
   
   //! Цифры 1 - 12
   for(let d = 1; d <= 12; d++) {
-    ctx.rotate((Math.PI / 180) * 30); // 60 шкал с интервалом по 6 пискселей между ними
+    //ctx.restore()
+    ctx.save();
+    ctx.translate(200, 0);
+    textAlign = "left";
     ctx.font = "48px serif";
-    ctx.textBaseline = "middle";
-    ctx.fillText(`${d}`, 200, 0);
+    ctx.rotate((Math.PI / 180) * 90);
+    ctx.fillText(`${d}`,-10, 0);
+    ctx.restore()
+    ctx.rotate((Math.PI / 180) * 30); // 60 шкал с интервалом по 6 пискселей между ними
+    
+    // ctx.restore()
+    
+    //
+    
+    // ctx.textBaseline = "middle";
+    //ctx.fillText(`${d}`, 200, 0);
     
   }
 
@@ -117,19 +129,20 @@ ctx.save() // сохранить пустой холст и позицию ос�
   //окружность радиусом 200
 
 //! данные
+  let now = new Date();
   // секунды
-  let seconds = new Date().getSeconds();
+  let seconds = now.getSeconds();
   // минуты
-  let minutes = new Date().getMinutes();
+  let minutes = now.getMinutes();
   // часы 
-  let hours = new Date().getHours();
+  let hours = now.getHours();
   hours =     hours>=12 ? hours-12 : hours; // чтобы часовая стрелка выше 12 сбрасывала счет
 
 
  // повернем холст вместе со стрелкой   
 // - 90 чтобы стрелка была повернута как на часах 0 это  270 градусов  
       ctx.strokeStyle = 'red' // цвет контура стрелки
-      ctx.rotate(getRadians((seconds * 6) - 90) ); // 60 шкал с интервалом по 6 пискселей между ними
+      ctx.rotate(getRadians((seconds * 6) - 100) ); // 60 шкал с интервалом по 6 пискселей между ними
 
       ctx.beginPath();
       ctx.lineWidth = '3'// ширина контура
@@ -149,7 +162,7 @@ ctx.save() // сохранить пустой холст и позицию ос�
       ctx.strokeStyle = 'black' // цвет контура стрелки
       ctx.beginPath();
       ctx.translate(250, 250);  // центр круга
-      ctx.rotate(getRadians((minutes * 6) + 270) ); // 60 шкал с интервалом по 6 пискселей между ними
+      ctx.rotate(getRadians((minutes * 6) - 100)); // 60 шкал с интервалом по 6 пискселей между ними
       ctx.lineWidth = '3'// ширина контура
       ctx.moveTo(0,0); // точка пера в центре холста (круга)
       ctx.lineTo(150,0); // линия до указанной координатной точки
@@ -167,18 +180,54 @@ ctx.save();
 ctx.strokeStyle = 'black' // цвет контура стрелки
 ctx.beginPath();
 ctx.translate(250, 250);  // центр круга
-ctx.rotate(getRadians(hours * 6 )); // 60 шкал с интервалом по 6 пискселей между ними
+// долго высчитывал, что секундную, что минутную, что часовую стрелку
+// hours - 12 - 1 - так как данные new Date.getHours() в формате 24 часа
+ctx.rotate(getRadians(((360 / 12) * (hours - 12 - 1)) - 70), true); 
+//ctx.rotate( hours*(Math.PI/6) + (Math.PI/360)*minutes + (Math.PI/21600)*seconds, true); 
+
 ctx.lineWidth = '5'// ширина контура
 ctx.moveTo(0,0); // точка пера в центре холста (круга)
-ctx.lineTo(100,0); // линия до указанной координатной точки
+ctx.lineTo(190,0); // линия до указанной координатной точки
 ctx.lineCap = "round";
 ctx.stroke(); // заливка 
 
 //! снова сбросить до пустого холста
 ctx.restore(); 
 
+
+
+
+
+
+//! ----------ЭЛЕКТРОННЫЕ ЧАСЫ-----------------
+// элементы
+let elementElectroWatch = document.querySelector('#elTime')
+let elementHours = document.querySelector('.ElHours');
+let elementMinutes = document.querySelector('.ElMinutes');
+let elementSeconds = document.querySelector('.ElSeconds');
+
+// данные
+let electroTimeNow = new Date();
+let electroHours = electroTimeNow.getHours();
+let electroMinutes = electroTimeNow.getMinutes();
+let electroSeconds = electroTimeNow.getSeconds();
+
+elementElectroWatch.style.fontSize = '40px'
+elementElectroWatch.style.color = 'blue'
+
+elementHours.innerHTML = electroHours;
+elementMinutes.innerHTML = `:${electroMinutes}`;
+elementSeconds.innerHTML = `:${electroSeconds}`;
+
+
+
+
 //! запустить в цикл
   window.requestAnimationFrame(clock);
 }
+
+
+
+
 
 
