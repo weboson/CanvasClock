@@ -180,14 +180,16 @@ ctx.save();
 ctx.strokeStyle = 'black' // цвет контура стрелки
 ctx.beginPath();
 ctx.translate(250, 250);  // центр круга
+
 // долго высчитывал, что секундную, что минутную, что часовую стрелку
+//* поэтому часовая стрелка показывает только с точностью в часы, 8: 40 занчит стрелка часовая на ровно 8
 // hours - 12 - 1 - так как данные new Date.getHours() в формате 24 часа
 ctx.rotate(getRadians(((360 / 12) * (hours - 12 - 1)) - 70), true); 
 //ctx.rotate( hours*(Math.PI/6) + (Math.PI/360)*minutes + (Math.PI/21600)*seconds, true); 
 
 ctx.lineWidth = '5'// ширина контура
 ctx.moveTo(0,0); // точка пера в центре холста (круга)
-ctx.lineTo(190,0); // линия до указанной координатной точки
+ctx.lineTo(100,0); // линия до указанной координатной точки
 ctx.lineCap = "round";
 ctx.stroke(); // заливка 
 
